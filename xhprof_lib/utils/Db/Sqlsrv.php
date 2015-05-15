@@ -52,7 +52,7 @@ class Db_Sqlsrv extends Db_Abstract
     public function connect()
     {
         $connectionInfo = array("UID" => $this->config['dbuser'], "PWD" =>  $this->config['dbpass'], "Database"=>$this->config['dbname'], "ReturnDatesAsStrings" => TRUE);
-        $linkid = sqlsrv_connect($this->config['dbhost'], $connectionInfo);
+        $linkid = sqlsrv_connect($this->config['dbhost'].','.$this->config['dbport'], $connectionInfo);
         if ($linkid === FALSE)
         {
             xhprof_error("Could not connect to db");

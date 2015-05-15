@@ -38,7 +38,7 @@ class Db_Pdo extends Db_Abstract
     
     public function connect()
     {
-        $connectionString = $this->config['dbtype'] . ':host=' . $this->config['dbhost'] . ';dbname=' . $this->config['dbname'];
+        $connectionString = $this->config['dbtype'] . ':host=' . $this->config['dbhost'] .';port='. $this->config['dbport'] . ';dbname=' . $this->config['dbname'];
         $db = new PDO($connectionString, $this->config['dbuser'], $this->config['dbpass']);
         if ($db === FALSE)
         {

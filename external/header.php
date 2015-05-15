@@ -128,7 +128,7 @@ if (extension_loaded('xhprof') && $_xhprof['doprofile'] === true) {
 
 function xhprof_shutdown_function() {
     global $_xhprof;
-    require dirname(__FILE__).'/footer.php';
+    include_once dirname(__FILE__).'/footer.php';
 }
 
 register_shutdown_function('xhprof_shutdown_function');
