@@ -79,16 +79,13 @@ unset($domain_weight);
   */
   function _urlSimilartor($url)
   {
-      //This is an example 
-      $url = preg_replace("!\d{4}!", "", $url);
-      
-      // For domain-specific configuration, you can use Apache setEnv xhprof_urlSimilartor_include [some_php_file]
-      if($similartorinclude = getenv('xhprof_urlSimilartor_include')) {
-      	require_once($similartorinclude);
+	  if(strpos($url, ' ') === false) {	//http request uri
+	      $pos = strpos($url, '?');
+	      return $pos === false ? $url : substr($url, 0, $pos);
+      } else {	//cli request uri
+	      $segments = explode(' ', $url);
+	      return implode(' ', array_slice($segments, 0, 3));	//only three params
       }
-      
-      $url = preg_replace("![?&]_profile=\d!", "", $url);
-      return $url;
   }
   
   function _aggregateCalls($calls, $rules = null)
