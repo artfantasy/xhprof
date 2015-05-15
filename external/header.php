@@ -1,8 +1,12 @@
 <?php
 if (PHP_SAPI == 'cli') {
-  $_SERVER['REMOTE_ADDR'] = null;
-  $_SERVER['HTTP_HOST'] = null;
-  $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
+	$ip = null;
+	$http_host = null;
+	$request_uri = implode(' ', $_SERVER['argv']);
+} else {
+	$ip = $_SERVER['REMOTE_ADDR'];
+	$http_host = $_SERVER['HTTP_HOST'];
+	$request_uri = $_SERVER['REQUEST_URI'];
 }
 
 include(dirname(__FILE__) . '/../xhprof_lib/config.php');
@@ -32,13 +36,13 @@ class visibilitator
 }
 
 // Only users from authorized IP addresses may control Profiling
-if ($controlIPs === false || in_array($_SERVER['REMOTE_ADDR'], $controlIPs) || PHP_SAPI == 'cli')
+if ($controlIPs === false || in_array($ip, $controlIPs) || PHP_SAPI == 'cli')
 {
   if (isset($_GET['_profile']))
   {
     //Give them a cookie to hold status, and redirect back to the same page
     setcookie('_profile', $_GET['_profile']);
-    $newURI = str_replace(array('_profile=1','_profile=0'), '', $_SERVER['REQUEST_URI']);
+    $newURI = str_replace(array('_profile=1','_profile=0'), '', $request_uri);
     header("Location: $newURI");
     exit;
   }
@@ -50,12 +54,12 @@ if ($controlIPs === false || in_array($_SERVER['REMOTE_ADDR'], $controlIPs) || P
       $_xhprof['type'] = 1;
   }
 }
-
+unset($ip);
 
 //Certain URLs should never have a link displayed. Think images, xml, etc. 
 foreach($exceptionURLs as $url)
 {
-    if (stripos($_SERVER['REQUEST_URI'], $url) !== FALSE)
+    if (stripos($request_uri, $url) !== FALSE)
     {
         $_xhprof['display'] = false;
         header('X-XHProf-No-Display: Trueness');
@@ -68,7 +72,7 @@ unset($exceptionURLs);
 $_xhprof['savepost'] = true;
 foreach ($exceptionPostURLs as $url)
 {
-    if (stripos($_SERVER['REQUEST_URI'], $url) !== FALSE)
+    if (stripos($request_uri, $url) !== FALSE)
     {
         $_xhprof['savepost'] = false;
         break;
@@ -90,19 +94,19 @@ unset($weight);
 
 // Certain URLS should never be profiled.
 foreach($ignoreURLs as $url){
-    if (stripos($_SERVER['REQUEST_URI'], $url) !== FALSE)
+    if (stripos($request_uri, $url) !== FALSE)
     {
         $_xhprof['doprofile'] = false;
         break;
     }
 }
 unset($ignoreURLs);
-
 unset($url);
+unset($request_uri);
 
 // Certain domains should never be profiled.
 foreach($ignoreDomains as $domain){
-    if (stripos($_SERVER['HTTP_HOST'], $domain) !== FALSE)
+    if (stripos($http_host, $domain) !== FALSE)
     {
         $_xhprof['doprofile'] = false;
         break;
@@ -110,6 +114,7 @@ foreach($ignoreDomains as $domain){
 }
 unset($ignoreDomains);
 unset($domain);
+unset($http_host);
 
 //Display warning if extension not available
 if (extension_loaded('xhprof') && $_xhprof['doprofile'] === true) {
