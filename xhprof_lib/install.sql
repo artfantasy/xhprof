@@ -23,3 +23,17 @@ CREATE TABLE `details` (
   KEY `pmu` (`pmu`),
   KEY `timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+
+/*********** xhprof crontab start  **************
+	
+DROP EVENT IF EXISTS `XHPROF_CRONTAB`;
+CREATE EVENT `XHPROF_CRONTAB` ON SCHEDULE
+EVERY 1 HOUR
+ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Auto Clear Table Data' DO
+DELETE FROM `details` WHERE timestamp < (CURRENT_TIMESTAMP() - 3600);
+
+/*********** xhprof crontab end  ****************
