@@ -64,7 +64,7 @@ Installation
  * Update the `controlIPs` variable to enable access.
   * For a development machine you can set this to `false` to disable IP checks.
 * Import the DB schema (it is just 1 table)
- * See the SQL at [xhprof_runs.php](https://github.com/toomasr/xhprof/blob/master/xhprof_lib/utils/xhprof_runs.php#L109)
+ * See the SQL at [install.sql](https://github.com/artfantasy/xhprof/blob/master/xhprof_lib/install.sql)
 * Add a PHP configuration to enable the profiling
  * If using Apache you can edit your virtual host configuration
  * Add `php_admin_value auto_prepend_file "/path/to/xhprof/external/header.php"`
