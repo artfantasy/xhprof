@@ -8,6 +8,8 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 }
 
 if (extension_loaded('xhprof') && $_xhprof['doprofile'] === true) {
+	if(function_exists('fastcgi_finish_request')) fastcgi_finish_request();
+	
     $profiler_namespace = $_xhprof['namespace'];  // namespace for your application
     $xhprof_data = xhprof_disable();
     $xhprof_runs = new XHProfRuns_Default();
