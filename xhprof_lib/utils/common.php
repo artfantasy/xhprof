@@ -14,7 +14,7 @@ function displayRuns($resultSet, $title = "")
         $date = strtotime($row['timestamp']);
         $date = date('Y-m-d H:i:s', $date);
         $wt = $row['wt'] / 1000;
-        echo "\t<tr><td>$date<br /><a href=\"?run={$row['id']}\"><span class=\"runid\">{$row['id']}</span></a></td><td>{$row['cpu']}</td><td>{$wt}</td><td>{$row['pmu']}</td><td><a href=\"?geturl={$url}\">{$html['url']}</a></td><td><a href=\"?getcurl={$c_url}\">{$html['c_url']}</a></td></tr>\n";
+        echo "\t<tr><td>$date<br /><a href=\"?run={$row['id']}\" target=\"_blank\"><span class=\"runid\">{$row['id']}</span></a></td><td>{$row['cpu']}</td><td>{$wt}</td><td>{$row['pmu']}</td><td><a href=\"?geturl={$url}\" target=\"_blank\">{$html['url']}</a></td><td><a href=\"?getcurl={$c_url}\" target=\"_blank\">{$html['c_url']}</a></td></tr>\n";
     }
     echo "</tbody>\n";
     echo "</table>\n";
